@@ -13,8 +13,6 @@ Pipeline ETL que integra Spotify e YouTube para analisar o que está em alta em 
 | 4 | Engajamento por região | Beatriz Prazim | `src/etl4_regiao.py` |
 | 5 | Visualização interativa | Diogenes Christian | `dashboard/app.py` |
 
-A infraestrutura compartilhada é coordenada pela Gabrielle: banco (`sql/schema.sql`, `src/db.py`), Docker, orquestração (`src/pipeline.py`) e qualidade (`src/qualidade.py`).
-
 ---
 
 ## Arquitetura
