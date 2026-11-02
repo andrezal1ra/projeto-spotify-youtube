@@ -85,11 +85,15 @@ def _erro_transitorio(exc: Exception) -> bool:
 class ClienteSpotify:
     def __init__(self, cfg: Config):
         import spotipy
+        from spotipy.cache_handler import MemoryCacheHandler
         from spotipy.oauth2 import SpotifyClientCredentials
 
         self.sp = spotipy.Spotify(
             auth_manager=SpotifyClientCredentials(
-                client_id=cfg.spotify_client_id, client_secret=cfg.spotify_client_secret
+                client_id=cfg.spotify_client_id, client_secret=cfg.spotify_client_secret,
+                # token só na memória: sem isso o Spotipy grava um arquivo .cache com o
+                # access token na raiz do projeto, e ele acaba indo parar no Git
+                cache_handler=MemoryCacheHandler(),
             ),
             retries=3, status_retries=3, backoff_factor=0.5,  # respeita Retry-After do 429
             requests_timeout=15,
