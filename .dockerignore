@@ -7,3 +7,5 @@ logs/
 data/*.db
 .env
 .git/
+# token do Spotipy
+.cache

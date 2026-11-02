@@ -5,3 +5,5 @@ __pycache__/
 logs/
 data/*.db
 .venv/
+# token do Spotipy
+.cache
