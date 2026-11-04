@@ -96,35 +96,31 @@ A API do YouTube só devolve o que está em alta **agora**. Para ter série hist
 ├── Dockerfile, docker-compose.yml, requirements.txt, .env.example
 ```
 
-## Resultados com dados simulados
+## Resultados com dados reais
 
-Estes resultados validam o pipeline, **não são conclusões sobre o mercado real**:
-
-- Os 6 países × 4 semanas produziram 1.200 posições de chart, 218 faixas e 1.200 registros de vídeos em alta.
-- O matching música ↔ vídeo acertou 98,6% dos pares (212 pares "match") e encontrou 97% dos clipes reais. Isso é possível medir porque, no simulado, sabemos o gabarito.
-- A correlação de Spearman entre posição no Spotify e views no YouTube ficou em ρ ≈ −0,64. Como o 1º lugar é o número menor, o sinal negativo quer dizer que posição melhor vem com mais views.
-- O pipeline completo roda em cerca de 2 segundos e é idempotente: rodar duas vezes não duplica dados.
-
-Com os dados reais, substituam esses números pelos que o dashboard mostrar.
+Os resultados devem ser registrados após conectar o banco produzido pelo pipeline real.
+Não há banco real incluído nesta cópia. Os CSVs do Spotify, isoladamente, não comprovam
+as métricas de YouTube, matching ou correlação. Consulte as cinco abas e registre o
+período, os países e filtros junto com os resultados. Não use os números de testes
+simulados como conclusões sobre o mercado.
 
 ## Limitações e melhorias futuras
 
 Ver [`docs/decisoes_tecnicas.md`](docs/decisoes_tecnicas.md#melhorias-futuras).
 
-## Deploy online (Streamlit Community Cloud, grátis)
+## Deploy online (Streamlit Community Cloud)
 
-1. Suba o projeto para um repositório no GitHub. O `.gitignore` já impede que o `.env` vá junto. Para o modo real, inclua os CSVs de `data/charts/` no repositório.
-2. Em https://share.streamlit.io, entre com o GitHub e clique em **Create app**. Escolha o repositório, a branch `main` e o arquivo `dashboard/app.py`.
-3. Em **Advanced settings**, escolha Python 3.12 e, em **Secrets**, cole as chaves no formato TOML:
+1. Execute o pipeline real em ambiente com as credenciais e valide o banco gerado.
+2. Configure um banco PostgreSQL persistente acessível pelo servidor; informe sua
+   `DATABASE_URL` em Secrets. Alternativamente, disponibilize `data/tendencias.db`
+   no ambiente do app por um processo de entrega controlado. O banco local é temporário
+   na hospedagem; ele não será reconstruído pelo dashboard.
+3. No Streamlit Community Cloud, selecione o repositório, a branch que contém estas
+   alterações e o arquivo `dashboard/app.py`. Use Python 3.12 e `requirements.txt`.
+4. Abra o app e confira Spotify, YouTube, Música × Vídeo, Regiões e Pipeline.
+   Sem o banco ou com esquema incompleto, o app mostra orientação de configuração.
+5. Após uma nova carga, use **Atualizar dados** para limpar o cache (também expira em 10 minutos).
 
-```toml
-MODO = "real"
-SPOTIFY_CLIENT_ID = "..."
-SPOTIFY_CLIENT_SECRET = "..."
-YOUTUBE_API_KEY = "..."
-PAISES = "BR,US,MX,AR,ES,JP"
-```
-
-4. Clique em **Deploy**. Na primeira abertura o dashboard roda o pipeline sozinho (alguns minutos) e depois mostra os dados.
-
-Sem os Secrets, o app sobe no modo simulado. O banco no servidor é temporário: quando o app "dorme" e acorda, o pipeline roda de novo na primeira visita, buscando o YouTube do dia. Para trocar a semana do Spotify, suba CSVs novos em `data/charts/`.
+O dashboard apenas lê os dados: não executa coleta nem cria dados simulados na abertura.
+As chaves das APIs são necessárias no ambiente de coleta; para consultar um banco
+pronto, basta configurar o acesso ao banco. Não publique senhas nem arquivos `.env`.
