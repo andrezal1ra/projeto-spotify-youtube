@@ -31,25 +31,6 @@ except Exception:  # rodando local, sem secrets.toml: usa o .env
 from src.config import Config  # noqa: E402
 
 
-def banco_tem_dados() -> bool:
-    try:
-        engine = create_engine(Config().database_url)
-        with engine.connect() as con:
-            return (con.execute(text("SELECT COUNT(*) FROM spotify_chart")).scalar() or 0) > 0
-    except Exception:
-        return False
-
-
-# Banco vazio (primeira vez no servidor, ou o servidor reiniciou): gera os dados sozinho.
-if not banco_tem_dados():
-    from src import pipeline
-    with st.spinner("Primeira execução: rodando o pipeline ETL (pode levar alguns minutos)..."):
-        codigo = pipeline.main([])
-    if codigo != 0:
-        st.error("O pipeline falhou. Veja o log em logs/pipeline.log (ou nos logs do servidor).")
-        st.stop()
-    st.cache_data.clear()
-
 ISO3 = {"BR": "BRA", "US": "USA", "MX": "MEX", "AR": "ARG", "ES": "ESP", "JP": "JPN",
         "GB": "GBR", "FR": "FRA", "DE": "DEU", "IT": "ITA", "PT": "PRT", "CO": "COL",
         "CL": "CHL", "PE": "PER", "CA": "CAN", "KR": "KOR", "IN": "IND", "AU": "AUS"}
@@ -62,8 +43,8 @@ AZUL, LARANJA = "#1F6FA8", "#E07B24"
 
 
 @st.cache_data(ttl=600)
-def carregar() -> dict[str, pd.DataFrame]:
-    engine = create_engine(Config().database_url)
+def carregar(database_url: str) -> dict[str, pd.DataFrame]:
+    engine = create_engine(database_url)
     consultas = {
         "chart": """SELECT c.*, f.nome, f.artista_principal, f.artistas, f.genero_principal,
                            f.duracao_min, f.tem_feat, f.data_lancamento
@@ -78,22 +59,36 @@ def carregar() -> dict[str, pd.DataFrame]:
         "overlap": "SELECT * FROM regiao_overlap",
         "execucoes": "SELECT * FROM pipeline_execucao ORDER BY inicio DESC",
     }
-    with engine.connect() as con:
-        dados = {k: pd.read_sql(text(q), con) for k, q in consultas.items()}
+    try:
+        with engine.connect() as con:
+            dados = {k: pd.read_sql(text(q), con) for k, q in consultas.items()}
+    finally:
+        engine.dispose()
     for k in ["chart", "videos", "correl", "regiao", "overlap"]:
         dados[k]["snapshot_date"] = pd.to_datetime(dados[k]["snapshot_date"]).dt.date
+    for coluna in ["views", "likes", "comentarios", "taxa_engajamento", "views_por_dia"]:
+        dados["videos"][coluna] = pd.to_numeric(dados["videos"][coluna], errors="coerce")
     dados["chart"]["genero_principal"] = dados["chart"]["genero_principal"].fillna("(sem gênero)")
     return dados
 
 
 try:
-    d = carregar()
-except Exception as exc:  # banco vazio ou fora do ar
-    st.error(f"Não consegui ler o banco. Rode primeiro `python -m src.pipeline`.\n\n{exc}")
+    d = carregar(Config().database_url)
+except Exception:  # não expõe credenciais nem detalhes da conexão
+    st.error("Banco indisponível ou esquema incompleto. Configure DATABASE_URL ou copie "
+             "o banco real para data/tendencias.db. Execute o pipeline real antes de abrir o dashboard.")
     st.stop()
 
 # ------------------------------------------------------------------ filtros
 st.sidebar.title("Filtros")
+if st.sidebar.button("Atualizar dados"):
+    st.cache_data.clear()
+    st.rerun()
+
+if d["chart"].empty:
+    st.info("Banco sem dados do Spotify. Execute a carga real antes de consultar as cinco abas.")
+    st.stop()
+
 datas = sorted(d["chart"]["snapshot_date"].unique())
 if len(datas) > 1:
     ini, fim = st.sidebar.select_slider("Período (semanas)", options=datas,
@@ -108,7 +103,8 @@ generos = st.sidebar.multiselect("Gêneros", sorted(d["chart"]["genero_principal
                                  placeholder="Todos")
 artistas = st.sidebar.multiselect("Artistas", sorted(d["chart"]["artista_principal"].unique()),
                                   placeholder="Todos")
-eng_max = float(d["videos"]["taxa_engajamento"].max() or 10)
+eng_max = pd.to_numeric(d["videos"]["taxa_engajamento"], errors="coerce").max()
+eng_max = float(eng_max) if pd.notna(eng_max) else 10.0
 eng = st.sidebar.slider("Engajamento no YouTube (%)", 0.0, round(eng_max + 0.5, 1),
                         (0.0, round(eng_max + 0.5, 1)), step=0.1)
 
@@ -122,6 +118,11 @@ if artistas:
     chart = chart[chart["artista_principal"].isin(artistas)]
 videos = no_periodo(d["videos"])
 videos = videos[videos["taxa_engajamento"].between(*eng) | videos["taxa_engajamento"].isna()]
+# Artista e gênero limitam vídeos aos vínculos confirmados; sem esses filtros,
+# YouTube continua mostrando todos os vídeos em alta no período e países.
+if generos or artistas:
+    ids = d["pares"].loc[d["pares"]["track_id"].isin(chart["track_id"]), "video_id"]
+    videos = videos[videos["video_id"].isin(ids)]
 ultima = chart["snapshot_date"].max() if not chart.empty else fim
 
 if chart.empty or not paises:
@@ -133,17 +134,25 @@ st.title("Tendências musicais e audiovisuais · Spotify × YouTube")
 # O modo vem do próprio banco (última execução), e não do .env: assim um banco gerado
 # com dados reais num PC continua marcado como real quando é aberto em outro PC.
 ultimas = d["execucoes"]
-modo = "real" if (not ultimas.empty and str(ultimas.iloc[0]["mensagem"]) == "modo=real") else "simulado"
+modos = set(ultimas.loc[ultimas["status"] == "ok", "mensagem"].dropna())
+modo = "real" if modos == {"modo=real"} else "simulado" if modos == {"modo=simulado"} else "não confirmado ou misto"
+if modo != "real":
+    st.warning(f"Origem do banco: {modo}. Estes dados não comprovam resultados reais.")
 st.caption(f"Semanas de {ini:%d/%m/%Y} a {fim:%d/%m/%Y} · {len(paises)} países · "
            f"fonte: Spotify Charts + Spotify Web API + YouTube Data API v3"
            + (" · ⚠️ DADOS SIMULADOS" if modo == "simulado" else ""))
 
 v_musica = videos.merge(d["pares"][["video_id", "track_id"]], on="video_id")
+v_musica = v_musica.merge(chart[["track_id", "country", "snapshot_date"]].drop_duplicates(),
+                          on=["track_id", "country", "snapshot_date"])
+v_musica = v_musica.sort_values("views", ascending=False).drop_duplicates(
+    ["track_id", "country", "snapshot_date"])
+mediana = videos["taxa_engajamento"].median()
 k1, k2, k3, k4, k5 = st.columns(5)
 k1.metric("Faixas no Top 50", chart["track_id"].nunique())
 k2.metric("Artistas", chart["artista_principal"].nunique())
 k3.metric("Vídeos em alta", videos["video_id"].nunique())
-k4.metric("Engajamento mediano YT", f"{videos['taxa_engajamento'].median():.2f}%")
+k4.metric("Engajamento mediano YT", f"{mediana:.2f}%" if pd.notna(mediana) else "Sem dados")
 k5.metric("Faixas com vídeo em alta", v_musica["track_id"].nunique())
 
 aba1, aba2, aba3, aba4, aba5 = st.tabs(
@@ -190,9 +199,11 @@ with aba1:
 
 # ------------------------------------------------------------------ YouTube
 with aba2:
+    if videos.empty:
+        st.info("Nenhum vídeo para os filtros escolhidos.")
     c1, c2 = st.columns(2)
     vu = videos[videos["snapshot_date"] == ultima].copy()
-    vu["tamanho"] = vu["comentarios"].astype("float").fillna(0)
+    vu["tamanho"] = vu["comentarios"].astype("float").fillna(0).clip(lower=0) + 1
     c1.plotly_chart(px.scatter(vu, x="views", y="taxa_engajamento", color="country",
                                hover_name="titulo", log_x=True, size="tamanho",
                                title="Views × engajamento (tamanho = comentários)",
@@ -219,7 +230,13 @@ with aba3:
                                title="Posição no Spotify × views no YouTube",
                                labels={"position": "Posição no Top 50", "views": "Views (log)",
                                        "country": "País"}), width="stretch")
-    corr = no_periodo(d["correl"])
+    from src.etl3_correlacao import resumir
+    faixas = chart[["track_id", "data_lancamento"]].drop_duplicates("track_id")
+    pares = d["pares"].assign(status="match")
+    corr = resumir(chart[["track_id", "country", "snapshot_date", "position"]],
+                   faixas, videos, pares)
+    if cruz.empty:
+        st.info("Nenhuma música vinculada a vídeo nos países e semanas selecionados.")
     c2.plotly_chart(px.bar(corr.groupby("country", as_index=False)
                            [["pct_faixas_com_video", "spearman_rho"]].mean(),
                            x="country", y="pct_faixas_com_video",
@@ -227,7 +244,10 @@ with aba3:
                            labels={"country": "País", "pct_faixas_com_video": "%"},
                            color_discrete_sequence=[LARANJA]), width="stretch")
     rho = corr["spearman_rho"].astype(float).mean()
-    st.info(f"Correlação de Spearman média entre posição e views: **ρ = {rho:.2f}**. "
+    if pd.isna(rho):
+        st.info("Correlação indisponível: são necessários ao menos cinco pares com variação por país e semana.")
+    else:
+        st.info(f"Correlação de Spearman média entre posição e views: **ρ = {rho:.2f}**. "
             "Valor negativo = quanto MELHOR a posição no Spotify (número menor), MAIS views "
             "o clipe tem. Correlação não prova causalidade.")
     st.subheader("Músicas presentes nas duas plataformas")
@@ -239,7 +259,11 @@ with aba3:
 
 # ------------------------------------------------------------------ regiões
 with aba4:
-    reg = no_periodo(d["regiao"])
+    from src.etl4_regiao import resumo_regioes, sobreposicao
+    reg = resumo_regioes(chart[["snapshot_date", "country", "track_id", "streams"]],
+                         chart[["track_id", "artista_principal", "genero_principal", "duracao_min"]]
+                         .drop_duplicates("track_id"), videos)
+    st.caption("Faixas locais: exclusivas entre os países selecionados, após os filtros.")
     reg = reg[reg["snapshot_date"] == reg["snapshot_date"].max()].copy()
     metrica = st.selectbox("Métrica do mapa", {
         "pct_faixas_locais": "% de faixas locais (só tocam ali)",
@@ -261,11 +285,14 @@ with aba4:
                            labels={metrica[0]: "", "pais": ""},
                            color_discrete_sequence=[LARANJA]), width="stretch")
     c1, c2 = st.columns(2)
-    ov = no_periodo(d["overlap"].rename(columns={"pais_a": "country"}))
+    ov = sobreposicao(chart).rename(columns={"pais_a": "country"})
     ov = ov[ov["pais_b"].isin(paises) & (ov["snapshot_date"] == ov["snapshot_date"].max())]
     matriz = pd.concat([ov, ov.rename(columns={"country": "pais_b", "pais_b": "country"})])
     matriz = matriz.pivot_table(index="country", columns="pais_b", values="jaccard")
-    c1.plotly_chart(px.imshow(matriz, text_auto=".2f", color_continuous_scale="Blues",
+    if matriz.empty:
+        c1.info("Selecione ao menos dois países com dados para comparar os rankings.")
+    else:
+        c1.plotly_chart(px.imshow(matriz, text_auto=".2f", color_continuous_scale="Blues",
                               title="Semelhança entre os Top 50 (índice de Jaccard)",
                               labels={"x": "", "y": "", "color": "Jaccard"}),
                     width="stretch")
@@ -280,4 +307,7 @@ with aba4:
 # ------------------------------------------------------------------ pipeline
 with aba5:
     st.subheader("Últimas execuções do ETL")
+    st.caption("Histórico global do banco; os filtros musicais não se aplicam às execuções.")
+    if d["execucoes"].empty:
+        st.info("Nenhuma execução registrada; origem dos dados não confirmada.")
     st.dataframe(d["execucoes"].head(20), width="stretch", hide_index=True)
