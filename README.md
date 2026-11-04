@@ -52,7 +52,7 @@ streamlit run dashboard/app.py
 ### Rodar os testes
 
 ```bash
-pytest           # 28 testes: transformações, qualidade, pipeline ponta a ponta e precisão do matching
+pytest           # transformações, extração, qualidade, pipeline e precisão do matching
 ```
 
 ## Modo real (com as APIs)
@@ -72,7 +72,19 @@ O dashboard só lê o banco, que no modo local é um único arquivo: `data/tende
 
 As chaves nunca saem do primeiro PC. O dashboard descobre pelo próprio banco que os dados são reais e tira o aviso de "dados simulados".
 
-No modo real, a coleta do YouTube (feita no dia) é alinhada à semana do CSV do Spotify Charts mais próxima, para as duas fontes se cruzarem. A data original da coleta continua na camada RAW.
+No modo real, a coleta do YouTube (feita no dia) é alinhada à semana do CSV do Spotify Charts mais próxima **do mesmo país**, para as duas fontes se cruzarem. A data original da coleta continua na camada RAW. Esse alinhamento é uma aproximação temporal, não uma coleta histórica do YouTube.
+
+### Validar somente o YouTube — Louise (ETL 2)
+
+Com `YOUTUBE_API_KEY`, `PAISES` e os CSVs em `data/charts/`, execute em caminhos novos:
+
+```bash
+python -m src.verificar_youtube --banco work/youtube-validacao.db --relatorio work/youtube-validacao.json
+```
+
+O comando usa um banco isolado, carrega os Charts somente dos CSVs e executa uma coleta real do ETL 2. Não exige nem executa o enriquecimento da API Spotify. O banco contém as tabelas necessárias à validação do YouTube; não representa a execução completa dos ETLs 1 a 4. O relatório registra a coleta real, a semana alinhada por país, duplicações e ausências, sem credenciais. Vídeos fora da categoria `10` (Música) ficam apenas na RAW. Coleta incompleta por país interrompe a carga tratada e preserva os dados recebidos.
+
+Evidências da coleta de 04/11/2026: [validação do ETL 2](docs/validacao_youtube_louise.md).
 
 A API do YouTube só devolve o que está em alta **agora**. Para ter série histórica, rodem o pipeline toda semana: o upsert acumula as coletas sem duplicar.
 
