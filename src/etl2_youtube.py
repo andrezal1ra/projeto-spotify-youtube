@@ -22,6 +22,7 @@ from src.qualidade import validar
 from src.utils import normalizar_titulo_video
 
 log = logging.getLogger("etl2")
+LIMITE_DIAS = 7
 
 
 def duracao_segundos(iso: str | None) -> int | None:
@@ -85,13 +86,33 @@ def alinhar_semana(videos: pd.DataFrame, datas_chart: list) -> pd.DataFrame:
     if videos.empty or not datas_chart:
         return videos
     datas = sorted(pd.to_datetime(pd.Series(datas_chart)).dt.date.unique())
+
     def mais_proxima(d):
         return min(datas, key=lambda c: abs((c - d).days))
+
     df = videos.copy()
-    df["snapshot_date"] = pd.to_datetime(df["snapshot_date"]).dt.date.map(mais_proxima)
-    # se duas coletas caírem na mesma semana, fica a mais recente
-    return df.sort_values("publicado_em").drop_duplicates(
-        ["video_id", "country", "snapshot_date"], keep="last")
+    coleta = pd.to_datetime(df["snapshot_date"]).dt.date
+    alinhada = coleta.map(mais_proxima)
+
+    # aviso: coleta muito longe do CSV mais próximo (dados podem estar desalinhados)
+    distancia = pd.Series(
+        [abs((a - c).days) for a, c in zip(alinhada, coleta)], index=df.index
+    )
+    longe = distancia > LIMITE_DIAS
+    if longe.any():
+        log.warning(
+            "%d registros com coleta a mais de %d dias do CSV mais próximo "
+            "(distância máxima: %d dias). Confira se os CSVs da semana estão em data/charts/.",
+            int(longe.sum()), LIMITE_DIAS, int(distancia.max()),
+        )
+
+    df["_coleta"] = coleta
+    df["snapshot_date"] = alinhada
+    # se duas coletas caírem na mesma semana, fica a mais recente (pela data da coleta)
+    df = df.sort_values("_coleta", kind="stable").drop_duplicates(
+        ["video_id", "country", "snapshot_date"], keep="last"
+    )
+    return df.drop(columns="_coleta")
 
 
 def executar(cfg: Config, engine) -> dict:
