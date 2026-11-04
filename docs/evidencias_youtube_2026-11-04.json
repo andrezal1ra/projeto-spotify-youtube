@@ -1,0 +1,150 @@
+{
+  "modo": "real",
+  "inicio_utc": "2026-11-04T20:35:09.050099+00:00",
+  "paises_solicitados": [
+    "BR",
+    "US",
+    "MX",
+    "AR",
+    "ES",
+    "JP"
+  ],
+  "origem_alinhamento": "CSV Spotify Charts; sem enriquecimento Spotify nesta execução",
+  "status": "ok",
+  "linhas_raw": 180,
+  "linhas_tratadas": 164,
+  "excluidos_fora_categoria_musica": 16,
+  "duplicadas_raw": 0,
+  "duplicadas_tratadas": 0,
+  "ausentes": {
+    "titulo": 0,
+    "views": 0,
+    "likes": 0,
+    "comentarios": 0,
+    "duracao_s": 0,
+    "publicado_em": 0
+  },
+  "inconsistencias": {
+    "views_negativas": 0,
+    "likes_negativos": 0,
+    "comentarios_negativos": 0,
+    "categoria_fora_musica": 0
+  },
+  "paises": [
+    {
+      "country": "AR",
+      "videos": 30,
+      "datas_coleta_reais": [
+        "2026-11-04"
+      ],
+      "semanas_alinhadas": [
+        "2026-10-29"
+      ],
+      "semanas_csv_disponiveis": [
+        "2026-10-01",
+        "2026-10-08",
+        "2026-10-15",
+        "2026-10-22",
+        "2026-10-29"
+      ],
+      "extracted_at_min": "2026-11-04 17:35:09.050193",
+      "extracted_at_max": "2026-11-04 17:35:09.050193"
+    },
+    {
+      "country": "BR",
+      "videos": 26,
+      "datas_coleta_reais": [
+        "2026-11-04"
+      ],
+      "semanas_alinhadas": [
+        "2026-10-29"
+      ],
+      "semanas_csv_disponiveis": [
+        "2026-10-01",
+        "2026-10-08",
+        "2026-10-15",
+        "2026-10-22",
+        "2026-10-29"
+      ],
+      "extracted_at_min": "2026-11-04 17:35:09.050193",
+      "extracted_at_max": "2026-11-04 17:35:09.050193"
+    },
+    {
+      "country": "ES",
+      "videos": 27,
+      "datas_coleta_reais": [
+        "2026-11-04"
+      ],
+      "semanas_alinhadas": [
+        "2026-10-29"
+      ],
+      "semanas_csv_disponiveis": [
+        "2026-10-01",
+        "2026-10-08",
+        "2026-10-15",
+        "2026-10-22",
+        "2026-10-29"
+      ],
+      "extracted_at_min": "2026-11-04 17:35:09.050193",
+      "extracted_at_max": "2026-11-04 17:35:09.050193"
+    },
+    {
+      "country": "JP",
+      "videos": 25,
+      "datas_coleta_reais": [
+        "2026-11-04"
+      ],
+      "semanas_alinhadas": [
+        "2026-10-29"
+      ],
+      "semanas_csv_disponiveis": [
+        "2026-10-01",
+        "2026-10-08",
+        "2026-10-15",
+        "2026-10-22",
+        "2026-10-29"
+      ],
+      "extracted_at_min": "2026-11-04 17:35:09.050193",
+      "extracted_at_max": "2026-11-04 17:35:09.050193"
+    },
+    {
+      "country": "MX",
+      "videos": 28,
+      "datas_coleta_reais": [
+        "2026-11-04"
+      ],
+      "semanas_alinhadas": [
+        "2026-10-29"
+      ],
+      "semanas_csv_disponiveis": [
+        "2026-10-01",
+        "2026-10-08",
+        "2026-10-15",
+        "2026-10-22",
+        "2026-10-29"
+      ],
+      "extracted_at_min": "2026-11-04 17:35:09.050193",
+      "extracted_at_max": "2026-11-04 17:35:09.050193"
+    },
+    {
+      "country": "US",
+      "videos": 28,
+      "datas_coleta_reais": [
+        "2026-11-04"
+      ],
+      "semanas_alinhadas": [
+        "2026-10-29"
+      ],
+      "semanas_csv_disponiveis": [
+        "2026-10-01",
+        "2026-10-08",
+        "2026-10-15",
+        "2026-10-22",
+        "2026-10-29"
+      ],
+      "extracted_at_min": "2026-11-04 17:35:09.050193",
+      "extracted_at_max": "2026-11-04 17:35:09.050193"
+    }
+  ],
+  "fim_utc": "2026-11-04T20:35:15.335312+00:00"
+}
