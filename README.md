@@ -52,7 +52,7 @@ streamlit run dashboard/app.py
 ### Rodar os testes
 
 ```bash
-pytest           # 28 testes: transformações, qualidade, pipeline ponta a ponta e precisão do matching
+pytest           # 41 testes: extração, transformações, qualidade, pipeline ponta a ponta e precisão do matching
 ```
 
 ## Modo real (com as APIs)
