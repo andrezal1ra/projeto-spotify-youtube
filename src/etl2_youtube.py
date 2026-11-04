@@ -88,32 +88,10 @@ def alinhar_semana(videos: pd.DataFrame, datas_chart: list) -> pd.DataFrame:
     def mais_proxima(d):
         return min(datas, key=lambda c: abs((c - d).days))
     df = videos.copy()
-    # Guarda a data original: depois do alinhamento, `snapshot_date` passa a
-    # representar a semana do Spotify e deixa de indicar quando o YouTube foi
-    # coletado.
-    df["_data_coleta"] = pd.to_datetime(df["snapshot_date"]).dt.date
-    df["snapshot_date"] = df["_data_coleta"].map(mais_proxima)
-
-    # O alinhamento pode colocar duas coletas na mesma semana. Nesse caso,
-    # conserva a coleta mais recente, independentemente de quando o vídeo foi
-    # publicado.
-    for data_coleta in sorted(df["_data_coleta"].unique()):
-        data_chart = mais_proxima(data_coleta)
-        distancia = abs((data_chart - data_coleta).days)
-        if distancia > 7:
-            log.warning(
-                "Coleta do YouTube em %s está a %d dias do CSV do Spotify "
-                "mais próximo (%s)",
-                data_coleta,
-                distancia,
-                data_chart,
-            )
-
-    return (
-        df.sort_values("_data_coleta", kind="stable")
-        .drop_duplicates(["video_id", "country", "snapshot_date"], keep="last")
-        .drop(columns="_data_coleta")
-    )
+    df["snapshot_date"] = pd.to_datetime(df["snapshot_date"]).dt.date.map(mais_proxima)
+    # se duas coletas caírem na mesma semana, fica a mais recente
+    return df.sort_values("publicado_em").drop_duplicates(
+        ["video_id", "country", "snapshot_date"], keep="last")
 
 
 def executar(cfg: Config, engine) -> dict:
