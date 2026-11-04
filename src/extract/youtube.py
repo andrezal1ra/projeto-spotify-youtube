@@ -89,7 +89,12 @@ def extrair(cfg: Config) -> tuple[pd.DataFrame, pd.DataFrame]:
     else:
         cli = ClienteYouTube(cfg)
         hoje = date.today()   # a API só dá o "agora": a série histórica vem de rodar toda semana
-        for c in cli.categorias(cfg.paises[0]):
+        try:
+            lista_categorias = cli.categorias(cfg.paises[0])
+        except Exception as exc:
+            status = getattr(getattr(exc, "resp", None), "status", "n/a")
+            raise RuntimeError(f"Falha nas categorias do YouTube: {type(exc).__name__}, HTTP {status}") from None
+        for c in lista_categorias:
             categorias[c["id"]] = c["snippet"]["title"]
         for pais in cfg.paises:
             try:
@@ -98,7 +103,9 @@ def extrair(cfg: Config) -> tuple[pd.DataFrame, pd.DataFrame]:
                 log.error("Cota esgotada ao chegar em %s; salvando o que já foi coletado", pais)
                 break
             except Exception as exc:
-                log.error("Falha ao extrair %s: %s (seguindo com os outros países)", pais, exc)
+                # HttpError pode incluir a URL com a API key: nunca registrar str(exc).
+                log.error("Falha ao extrair %s: %s, HTTP %s (seguindo com os outros países)",
+                          pais, type(exc).__name__, getattr(getattr(exc, "resp", None), "status", "n/a"))
                 continue
             for pos, item in enumerate(itens, start=1):
                 item["_posicao"] = pos
