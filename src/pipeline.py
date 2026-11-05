@@ -37,7 +37,7 @@ def main(argv: list[str] | None = None) -> int:
     cfg = Config()
     if args.modo:
         cfg.modo = args.modo
-    cfg.validar()
+    cfg.validar(etapas=args.etapas)
     log.info("Iniciando pipeline | modo=%s | países=%s | banco=%s", cfg.modo,
              ",".join(cfg.paises), cfg.database_url.split("@")[-1])
 
