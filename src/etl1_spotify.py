@@ -53,7 +53,12 @@ def transformar_faixas(raw_track: pd.DataFrame, raw_chart: pd.DataFrame) -> pd.D
             "generos": "; ".join(generos) or None,
             "genero_principal": generos[0] if generos else None,
         })
-    faixas = pd.DataFrame(linhas)
+    # Mantém o esquema mesmo se todas as chamadas da API falharem.
+    faixas = pd.DataFrame(linhas, columns=[
+        "track_id", "nome", "artista_principal", "artistas", "n_artistas",
+        "tem_feat", "duracao_ms", "album", "data_lancamento", "generos",
+        "genero_principal",
+    ])
 
     # faixas sem metadados da API: completa com o que o CSV do chart traz
     sem_meta = set(raw_chart["track_id"]) - set(faixas.get("track_id", []))
