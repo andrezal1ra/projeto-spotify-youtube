@@ -1,0 +1,141 @@
+{
+  "fonte": "30 CSVs versionados, apenas as 50 primeiras linhas de cada arquivo",
+  "usa_api": false,
+  "reconciliacao_banco": true,
+  "por_pais": [
+    {
+      "pais": "AR",
+      "semanas": 5,
+      "posicoes": 250,
+      "faixas_unicas": 65,
+      "streams_top50": 176253462
+    },
+    {
+      "pais": "BR",
+      "semanas": 5,
+      "posicoes": 250,
+      "faixas_unicas": 73,
+      "streams_top50": 960831888
+    },
+    {
+      "pais": "ES",
+      "semanas": 5,
+      "posicoes": 250,
+      "faixas_unicas": 83,
+      "streams_top50": 294149630
+    },
+    {
+      "pais": "JP",
+      "semanas": 5,
+      "posicoes": 250,
+      "faixas_unicas": 66,
+      "streams_top50": 291299528
+    },
+    {
+      "pais": "MX",
+      "semanas": 5,
+      "posicoes": 250,
+      "faixas_unicas": 66,
+      "streams_top50": 930559730
+    },
+    {
+      "pais": "US",
+      "semanas": 5,
+      "posicoes": 250,
+      "faixas_unicas": 76,
+      "streams_top50": 1092243418
+    }
+  ],
+  "top10_streams": [
+    {
+      "id": "3h5T5JypYU7huFiVYhv1dr",
+      "nome": "BbY WOW",
+      "artistas": "KAROL G, Judeline, rusowsky",
+      "paises": 4,
+      "semanas": 5,
+      "posicoes": 20,
+      "streams": 107174954
+    },
+    {
+      "id": "6756nr1dYiw5aNLSgIHNOI",
+      "nome": "OLIVIA LA FLAKA",
+      "artistas": "Natanael Cano, Tito Double P, Victor Mendivil, Ovi",
+      "paises": 1,
+      "semanas": 5,
+      "posicoes": 5,
+      "streams": 46701618
+    },
+    {
+      "id": "1uDn0nbzeGPVw97jp7SvzR",
+      "nome": "Pós - Ao Vivo",
+      "artistas": "Felipe e Rodrigo",
+      "paises": 1,
+      "semanas": 3,
+      "posicoes": 3,
+      "streams": 45232384
+    },
+    {
+      "id": "4RuRAwMmuBxw4QsKeFVhxh",
+      "nome": "Postinho de Gasolina",
+      "artistas": "João Gustavo e Murilo, Grelo",
+      "paises": 1,
+      "semanas": 4,
+      "posicoes": 4,
+      "streams": 44325181
+    },
+    {
+      "id": "11hcBLPtbMp4aQI6zGQLub",
+      "nome": "Patient Zero",
+      "artistas": "Taylor Swift",
+      "paises": 2,
+      "semanas": 5,
+      "posicoes": 6,
+      "streams": 42529324
+    },
+    {
+      "id": "70cHKK8bHAfJrOGVnfRG9J",
+      "nome": "Nicole Kidman",
+      "artistas": "ADÉLA",
+      "paises": 1,
+      "semanas": 5,
+      "posicoes": 5,
+      "streams": 41691563
+    },
+    {
+      "id": "7scFxt9VhL4FJwuPSfRlfN",
+      "nome": "Choosin' Texas",
+      "artistas": "Ella Langley",
+      "paises": 1,
+      "semanas": 5,
+      "posicoes": 5,
+      "streams": 39848756
+    },
+    {
+      "id": "37wfBdDJidbipEG2fEwkWX",
+      "nome": "RIKI",
+      "artistas": "Neton Vega",
+      "paises": 1,
+      "semanas": 5,
+      "posicoes": 5,
+      "streams": 33737071
+    },
+    {
+      "id": "6hpuesKPNa3WhV48O7Fa47",
+      "nome": "SUPERESTRELLA",
+      "artistas": "Aitana",
+      "paises": 3,
+      "semanas": 5,
+      "posicoes": 15,
+      "streams": 30956161
+    },
+    {
+      "id": "0eAuGrXyGFYwur9ARUe7LJ",
+      "nome": "Earrings",
+      "artistas": "Malcolm Todd",
+      "paises": 1,
+      "semanas": 5,
+      "posicoes": 5,
+      "streams": 30839080
+    }
+  ]
+}

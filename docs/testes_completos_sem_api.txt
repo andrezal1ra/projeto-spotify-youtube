@@ -1,0 +1,5 @@
+Execução local da suíte completa de testes, sem novas consultas à API.
+Python 3.12.16; PYTEST_DISABLE_PLUGIN_AUTOLOAD=1.
+Comando equivalente: python -m pytest tests -q --tb=short
+Resultado observado: 100 passed in 10.69s
+Os cenários de API usam clientes falsos; não representam enriquecimento real.
