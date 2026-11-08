@@ -1,0 +1,5 @@
+Python 3.12.16. PYTEST_DISABLE_PLUGIN_AUTOLOAD=1.
+pytest.main: tests/test_csvs_spotify.py tests/test_extract_spotify.py tests/test_etl1_sem_metadados.py tests/test_transformacoes.py -q
+............................................................... [100%]
+63 passed in 6.23s
+Os testes de API usam cliente falso. Não comprovam coleta autenticada.

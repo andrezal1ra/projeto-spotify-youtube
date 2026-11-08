@@ -1,0 +1,364 @@
+{
+  "modo": "auditoria_csv_sem_api",
+  "enriquecimento_api_executado": false,
+  "arquivos": 30,
+  "linhas_arquivos": 6000,
+  "linhas_top50": 1500,
+  "faixas_unicas": 400,
+  "paises": [
+    "AR",
+    "BR",
+    "ES",
+    "JP",
+    "MX",
+    "US"
+  ],
+  "semanas": [
+    "2026-10-01",
+    "2026-10-08",
+    "2026-10-15",
+    "2026-10-22",
+    "2026-10-29"
+  ],
+  "duplicados_chave": 0,
+  "indice_min": 8.9,
+  "indice_max": 100.0,
+  "idempotencia_verificada": true,
+  "metadados_api": "pendentes: artistas oficiais, gêneros, álbum, duração e lançamento",
+  "falhas_api": null,
+  "faixas_nao_encontradas_api": null,
+  "cobertura": [
+    {
+      "country": "AR",
+      "snapshot_date": "2026-10-01",
+      "linhas": "50"
+    },
+    {
+      "country": "AR",
+      "snapshot_date": "2026-10-08",
+      "linhas": "50"
+    },
+    {
+      "country": "AR",
+      "snapshot_date": "2026-10-15",
+      "linhas": "50"
+    },
+    {
+      "country": "AR",
+      "snapshot_date": "2026-10-22",
+      "linhas": "50"
+    },
+    {
+      "country": "AR",
+      "snapshot_date": "2026-10-29",
+      "linhas": "50"
+    },
+    {
+      "country": "BR",
+      "snapshot_date": "2026-10-01",
+      "linhas": "50"
+    },
+    {
+      "country": "BR",
+      "snapshot_date": "2026-10-08",
+      "linhas": "50"
+    },
+    {
+      "country": "BR",
+      "snapshot_date": "2026-10-15",
+      "linhas": "50"
+    },
+    {
+      "country": "BR",
+      "snapshot_date": "2026-10-22",
+      "linhas": "50"
+    },
+    {
+      "country": "BR",
+      "snapshot_date": "2026-10-29",
+      "linhas": "50"
+    },
+    {
+      "country": "ES",
+      "snapshot_date": "2026-10-01",
+      "linhas": "50"
+    },
+    {
+      "country": "ES",
+      "snapshot_date": "2026-10-08",
+      "linhas": "50"
+    },
+    {
+      "country": "ES",
+      "snapshot_date": "2026-10-15",
+      "linhas": "50"
+    },
+    {
+      "country": "ES",
+      "snapshot_date": "2026-10-22",
+      "linhas": "50"
+    },
+    {
+      "country": "ES",
+      "snapshot_date": "2026-10-29",
+      "linhas": "50"
+    },
+    {
+      "country": "JP",
+      "snapshot_date": "2026-10-01",
+      "linhas": "50"
+    },
+    {
+      "country": "JP",
+      "snapshot_date": "2026-10-08",
+      "linhas": "50"
+    },
+    {
+      "country": "JP",
+      "snapshot_date": "2026-10-15",
+      "linhas": "50"
+    },
+    {
+      "country": "JP",
+      "snapshot_date": "2026-10-22",
+      "linhas": "50"
+    },
+    {
+      "country": "JP",
+      "snapshot_date": "2026-10-29",
+      "linhas": "50"
+    },
+    {
+      "country": "MX",
+      "snapshot_date": "2026-10-01",
+      "linhas": "50"
+    },
+    {
+      "country": "MX",
+      "snapshot_date": "2026-10-08",
+      "linhas": "50"
+    },
+    {
+      "country": "MX",
+      "snapshot_date": "2026-10-15",
+      "linhas": "50"
+    },
+    {
+      "country": "MX",
+      "snapshot_date": "2026-10-22",
+      "linhas": "50"
+    },
+    {
+      "country": "MX",
+      "snapshot_date": "2026-10-29",
+      "linhas": "50"
+    },
+    {
+      "country": "US",
+      "snapshot_date": "2026-10-01",
+      "linhas": "50"
+    },
+    {
+      "country": "US",
+      "snapshot_date": "2026-10-08",
+      "linhas": "50"
+    },
+    {
+      "country": "US",
+      "snapshot_date": "2026-10-15",
+      "linhas": "50"
+    },
+    {
+      "country": "US",
+      "snapshot_date": "2026-10-22",
+      "linhas": "50"
+    },
+    {
+      "country": "US",
+      "snapshot_date": "2026-10-29",
+      "linhas": "50"
+    }
+  ],
+  "inventario": [
+    {
+      "arquivo": "regional-ar-weekly-2026-10-01.csv",
+      "linhas": 200,
+      "sha256": "6c362010df63abd98787219a78481edd5615d401b3aa099b4e8a6427f9526e52",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-ar-weekly-2026-10-08.csv",
+      "linhas": 200,
+      "sha256": "fcb90c68085258c459993815fab0d407f77bbe0c8d2b5d0c87f0c06dcb6ec472",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-ar-weekly-2026-10-15.csv",
+      "linhas": 200,
+      "sha256": "7c1fc76c378f01b027ea58e9b0032cca653bfa9d361c730d191c71a97ea8ff7a",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-ar-weekly-2026-10-22.csv",
+      "linhas": 200,
+      "sha256": "4eab8573029ef79af2d7434a5e7a4384758b3ccc8348a2c1902b74b235dbf630",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-ar-weekly-2026-10-29.csv",
+      "linhas": 200,
+      "sha256": "e76904e85bd9074c4358acf5d01fc91d09a2db302b5e6fc4d56fc17241924958",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-br-weekly-2026-10-01.csv",
+      "linhas": 200,
+      "sha256": "faa0df57b2739cb8b6a77a3f079faa2bfb481b4baf268d6626eb575eade5048f",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-br-weekly-2026-10-08.csv",
+      "linhas": 200,
+      "sha256": "0f2073458e49c3a1cb48f706f55cfd5e77510bda0a62249f3851493572eebb1a",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-br-weekly-2026-10-15.csv",
+      "linhas": 200,
+      "sha256": "8954225ff4da2bb7d3b9393ebd1225942377b8690e6950758e7deb4529aa7540",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-br-weekly-2026-10-22.csv",
+      "linhas": 200,
+      "sha256": "c6416917b6f399f057a5e7e4f458d0a1e0422bf97ce58157e4473978226b208e",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-br-weekly-2026-10-29.csv",
+      "linhas": 200,
+      "sha256": "b53646cb22c75919eb1a78d5793c8f8d65536d3065c5959fa3a4c47de06b238f",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-es-weekly-2026-10-01.csv",
+      "linhas": 200,
+      "sha256": "f0e867bb9b98ae5783a8be02958a796734887bb4d7d51812380351567a3f62fe",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-es-weekly-2026-10-08.csv",
+      "linhas": 200,
+      "sha256": "78298dd44821f3ddab2435e7a0fac03d1703079ac6ae12284a686d6b534e5480",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-es-weekly-2026-10-15.csv",
+      "linhas": 200,
+      "sha256": "a2d496dcfc2559fe37ef028c65f42caa0c4673234ff5f2a2b7ab681d356a3383",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-es-weekly-2026-10-22.csv",
+      "linhas": 200,
+      "sha256": "d679a6ee0059670ae83cfb8db2bae3f91224494071aa3b379a50dd2ddfec0739",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-es-weekly-2026-10-29.csv",
+      "linhas": 200,
+      "sha256": "6608f7ecde5ca10b7123c73ef6a470aaf9da6f7ffae6f7d83db3a7b110c146fe",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-jp-weekly-2026-10-01.csv",
+      "linhas": 200,
+      "sha256": "b0f93d9e68667f7a9fe5948300d0953b1b90243adab1a1f57651d0ae6298166c",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-jp-weekly-2026-10-08.csv",
+      "linhas": 200,
+      "sha256": "07260ec94b64dcec2d8e125bdd3ea8585ba5a0f82d6488bd7a27bb857476438c",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-jp-weekly-2026-10-15.csv",
+      "linhas": 200,
+      "sha256": "03cc86a4f92c839f0b386e1bb43cb6511462cfe7d05bbeb7e7f8ee51de5f2579",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-jp-weekly-2026-10-22.csv",
+      "linhas": 200,
+      "sha256": "0ffcd7bcc2b3227bfc60e08695848bd30ca917173795394deaf4d9e4636a38ac",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-jp-weekly-2026-10-29.csv",
+      "linhas": 200,
+      "sha256": "676d104f075d93c88198b59963d1e297ebaef626c79b34fd32e1bc14ee790e8f",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-mx-weekly-2026-10-01.csv",
+      "linhas": 200,
+      "sha256": "763cc75de1f83f87464c3a67da7d005090ec31af1c553139298deff3eea4f8f2",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-mx-weekly-2026-10-08.csv",
+      "linhas": 200,
+      "sha256": "a2dbb01cc72432e65c6bf457c1e199638a720a7b8831db898f5286d8b8524b15",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-mx-weekly-2026-10-15.csv",
+      "linhas": 200,
+      "sha256": "8ef0c4e99473159299672584fb01c07f839d0dd8a930a0d3dc827e79c8d87407",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-mx-weekly-2026-10-22.csv",
+      "linhas": 200,
+      "sha256": "37c775da1a90bbed3128c0c59141ea101fd3733442c8ca0fa28d29dcf25c4aad",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-mx-weekly-2026-10-29.csv",
+      "linhas": 200,
+      "sha256": "c84b69c8107d20d5cbee52fb773524b39de19d6da6666b4c3aff2c8b0297e7f4",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-us-weekly-2026-10-01.csv",
+      "linhas": 200,
+      "sha256": "daff7aaa2caf67549ee2978fa8f5ea68d06ce3326d34ed0a8992d11e1a562373",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-us-weekly-2026-10-08.csv",
+      "linhas": 200,
+      "sha256": "6d9aa708c3f61996715fa97e8e64100fa1c82daebfa5a05e1670fe564142323d",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-us-weekly-2026-10-15.csv",
+      "linhas": 200,
+      "sha256": "66b4066daed2d5d0a80832946ea3c09872ade1d4004163bf23180d7e8cb85a22",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-us-weekly-2026-10-22.csv",
+      "linhas": 200,
+      "sha256": "d25f861ed14d95c42d0f9cae87c44fd8c49baa1751a0b0d3fd3c1383e4f1b472",
+      "problemas": []
+    },
+    {
+      "arquivo": "regional-us-weekly-2026-10-29.csv",
+      "linhas": 200,
+      "sha256": "92d9a57ccbd67d86921cb620e8fa6a4f2d50170f502b3078f032eb2f6eb1b49b",
+      "problemas": []
+    }
+  ]
+}

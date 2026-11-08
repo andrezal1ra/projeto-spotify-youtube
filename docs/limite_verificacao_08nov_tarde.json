@@ -1,0 +1,7 @@
+{
+  "verificado_em_utc": "2026-11-08T18:53:00Z",
+  "autenticacao_http": 200,
+  "consulta_faixa_http": 429,
+  "retry_after_segundos": 36056,
+  "conclusao": "Coleta real completa ainda impedida pelo limite do Spotify. Aguardar até aproximadamente 09/11/2026 01h54 America/Sao_Paulo."
+}

@@ -1,0 +1,11 @@
+{
+  "data": "2026-11-08",
+  "autenticacao_http": 200,
+  "faixas_com_resposta": 300,
+  "artistas_com_resposta": 296,
+  "limite_http": 429,
+  "retry_after_segundos": 85962,
+  "retomada_nao_antes_de": "2026-11-09T01:54:00-03:00",
+  "carga_metadados_concluida": false,
+  "observacao": "Respostas registradas por endpoint; payloads não persistidos antes da interrupção do extrator original. Coleta e validação completas pendentes."
+}
